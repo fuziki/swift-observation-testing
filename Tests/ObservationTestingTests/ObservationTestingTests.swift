@@ -24,17 +24,17 @@ final class SampleViewModel {
 // MARK: - Tests
 @Suite("ObservationTesting Tests")
 struct ObservationTestingTests {
-    @Test("R時間経過と状態変化を正確に記録できること")
+    @Test("Can accurately record time progression and state changes")
     @MainActor
     func testTimelineRecording() async {
         // 1. Setup Timeline & ViewModel
         let timeline = TestTimeline()
         let vm = SampleViewModel(clock: timeline.anyClock)
 
-        // 2. 監視するプロパティと同名の変数でObserverを受け取る
+        // 2. Receive the Observer in a variable with the same name as the observed property
         let title = timeline.observe(vm.title)
 
-        // 3. Schedule Scenarios (順不同で登録しても絶対時間で正しく整列されることを確認)
+        // 3. Schedule Scenarios (verify that they are correctly sorted by absolute time regardless of registration order)
         timeline.schedule(at: .seconds(3)) {
             await vm.onTap()
         }
@@ -47,21 +47,21 @@ struct ObservationTestingTests {
 
         // 5. Assertions
         #expect(title.events == [
-            .next(.zero,       "A"), // 初期状態
-            .next(.seconds(1), "B"), // 1秒時点: 1回目のタップ開始
-            .next(.seconds(2), "C"), // 2秒時点: 1回目のタップのsleep(1秒)完了
-            .next(.seconds(3), "B"), // 3秒時点: 2回目のタップ開始
-            .next(.seconds(4), "C"), // 4秒時点: 2回目のタップのsleep(1秒)完了
+            .next(.zero,       "A"), // initial state
+            .next(.seconds(1), "B"), // at 1s: first tap begins
+            .next(.seconds(2), "C"), // at 2s: first tap's sleep(1s) completes
+            .next(.seconds(3), "B"), // at 3s: second tap begins
+            .next(.seconds(4), "C"), // at 4s: second tap's sleep(1s) completes
         ])
     }
 
-    @Test("複雑な条件式(@autoclosure)の変化を監視できること")
+    @Test("Can observe changes in a complex expression (@autoclosure)")
     @MainActor
     func testComplexExpressionObservation() async {
         let timeline = TestTimeline()
         let vm = SampleViewModel(clock: timeline.anyClock)
 
-        // titleが "C" かどうかという Bool の状態変化を監視する
+        // Observe the Bool state change of whether title equals "C"
         let isTitleC = timeline.observe(vm.title == "C")
 
         timeline.schedule(at: .seconds(2)) {
@@ -70,13 +70,13 @@ struct ObservationTestingTests {
 
         await timeline.advance(by: .seconds(5))
 
-        // withObservationTracking の onChange は「式の結果」ではなく
-        // 「追跡対象プロパティ（title）の変化」で発火する。
-        // そのため "A" → "B" の変化（false → false）も記録される。
+        // withObservationTracking's onChange fires on changes to the tracked property (title),
+        // not on changes to the expression result.
+        // Therefore, the "A" → "B" change (false → false) is also recorded.
         #expect(isTitleC.events == [
-            .next(.zero,       false), // 初期値 ("A" == "C" → false)
-            .next(.seconds(2), false), // "B" への変化で onChange 発火 → false のまま記録
-            .next(.seconds(3), true),  // "C" への変化で onChange 発火 → true
+            .next(.zero,       false), // initial value ("A" == "C" → false)
+            .next(.seconds(2), false), // onChange fires on change to "B" → recorded as false
+            .next(.seconds(3), true),  // onChange fires on change to "C" → true
         ])
     }
 }

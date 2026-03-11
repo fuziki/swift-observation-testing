@@ -2,10 +2,10 @@ import Foundation
 import Clocks
 import Observation
 
-/// 指定された式の値の変化を、仮想時間と共に記録します。
+/// Records changes in the value of the specified expression along with virtual time.
 @MainActor
 public final class TestObserver<Value: Equatable> {
-    /// 記録されたイベントの履歴
+    /// History of recorded events
     public private(set) var events: [Recorded<Value>] = []
 
     private let timeline: TestTimeline
@@ -18,7 +18,7 @@ public final class TestObserver<Value: Equatable> {
         self.timeline = timeline
         self.expression = expression
 
-        // 0秒時点の初期値を記録
+        // Record the initial value at time zero
         events.append(.next(.zero, expression()))
         startObserving()
     }

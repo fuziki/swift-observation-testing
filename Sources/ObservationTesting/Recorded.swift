@@ -1,6 +1,6 @@
 import Foundation
 
-/// 仮想時間上のどのタイミングで、どのような値が発生したかを記録します。
+/// Records what value occurred at which point in virtual time.
 public enum Recorded<Value: Equatable>: Equatable, CustomStringConvertible {
     case next(Duration, Value)
 
