@@ -1,12 +1,15 @@
 import Testing
 import Clocks
+import Combine
 import Observation
 @testable import ObservationTesting
 
 // MARK: - Sample Production Code
+@MainActor
 @Observable
 final class SampleViewModel {
     var title = "A"
+    var showDialog = PassthroughSubject<Void, Never>()
 
     private let clock: AnyClock<Duration>
 
@@ -18,14 +21,15 @@ final class SampleViewModel {
         title = "B"
         try? await clock.sleep(for: .seconds(1))
         title = "C"
+        showDialog.send()
     }
 }
 
 // MARK: - Tests
 @Suite("ObservationTesting Tests")
+@MainActor
 struct ObservationTestingTests {
     @Test("Can accurately record time progression and state changes")
-    @MainActor
     func testTimelineRecording() async {
         // 1. Setup Timeline & ViewModel
         let timeline = TestTimeline()
@@ -55,8 +59,29 @@ struct ObservationTestingTests {
         ])
     }
 
+    @Test("Can record events emitted by a Publisher")
+    func testPublisherObservation() async {
+        let timeline = TestTimeline()
+        let vm = SampleViewModel(clock: timeline.anyClock)
+
+        let showDialog = timeline.observe(vm.showDialog)
+
+        timeline.schedule(at: .seconds(1)) {
+            await vm.onTap()
+        }
+        timeline.schedule(at: .seconds(3)) {
+            await vm.onTap()
+        }
+
+        await timeline.advance(by: .seconds(10))
+
+        #expect(showDialog.events.map(\.time) == [
+            .seconds(2), // at 2s: first tap's sleep(1s) completes
+            .seconds(4), // at 4s: second tap's sleep(1s) completes
+        ])
+    }
+
     @Test("Can observe changes in a complex expression (@autoclosure)")
-    @MainActor
     func testComplexExpressionObservation() async {
         let timeline = TestTimeline()
         let vm = SampleViewModel(clock: timeline.anyClock)

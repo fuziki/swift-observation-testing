@@ -1,5 +1,6 @@
 import Foundation
 import Clocks
+import Combine
 
 /// Manages virtual time and controls action execution (scenarios) at specified times.
 @MainActor
@@ -21,6 +22,13 @@ public final class TestTimeline {
         _ expression: @autoclosure @escaping @MainActor () -> Value
     ) -> TestObserver<Value> {
         TestObserver(timeline: self, expression: expression)
+    }
+
+    /// Registers a Publisher and creates a TestObserver that records emitted values
+    public func observe<P: Publisher>(
+        _ publisher: P
+    ) -> TestObserver<P.Output> where P.Failure == Never {
+        TestObserver(timeline: self, publisher: publisher)
     }
 
     /// Schedules an action at an absolute time measured from test start (0 seconds)

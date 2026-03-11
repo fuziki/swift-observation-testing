@@ -1,6 +1,7 @@
 import Foundation
 import Clocks
 import Observation
+import Combine
 
 /// Records changes in the value of the specified expression along with virtual time.
 @MainActor
@@ -9,7 +10,8 @@ public final class TestObserver<Value> {
     public private(set) var events: [Recorded<Value>] = []
 
     private let timeline: TestTimeline
-    private nonisolated(unsafe) let expression: () -> Value
+    private nonisolated(unsafe) let expression: (() -> Value)?
+    private var cancellable: AnyCancellable?
 
     internal init(
         timeline: TestTimeline,
@@ -23,9 +25,25 @@ public final class TestObserver<Value> {
         startObserving()
     }
 
+    internal init<P: Publisher>(
+        timeline: TestTimeline,
+        publisher: P
+    ) where P.Output == Value, P.Failure == Never {
+        self.timeline = timeline
+        self.expression = nil
+        cancellable = publisher.sink { [weak self] value in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                let duration = self.timeline.startInstant.duration(to: self.timeline.clock.now)
+                self.events.append(.next(duration, value))
+            }
+        }
+    }
+
     private func startObserving() {
         @Sendable func observeNext() {
             withObservationTracking {
+                guard let expression else { return }
                 _ = expression()
             } onChange: { [weak self] in
                 Task { @MainActor in
@@ -33,7 +51,9 @@ public final class TestObserver<Value> {
 
                     let duration = self.timeline.startInstant.duration(to: self.timeline.clock.now)
                     await Task.yield()
-                    self.events.append(.next(duration, self.expression()))
+                    if let expression = self.expression {
+                        self.events.append(.next(duration, expression()))
+                    }
 
                     self.startObserving()
                 }
