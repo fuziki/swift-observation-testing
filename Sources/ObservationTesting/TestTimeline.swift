@@ -17,7 +17,7 @@ public final class TestTimeline {
     }
 
     /// Registers an observable expression and creates a TestObserver
-    public func observe<Value: Equatable>(
+    public func observe<Value>(
         _ expression: @autoclosure @escaping @MainActor () -> Value
     ) -> TestObserver<Value> {
         TestObserver(timeline: self, expression: expression)

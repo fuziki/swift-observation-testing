@@ -4,7 +4,7 @@ import Observation
 
 /// Records changes in the value of the specified expression along with virtual time.
 @MainActor
-public final class TestObserver<Value: Equatable> {
+public final class TestObserver<Value> {
     /// History of recorded events
     public private(set) var events: [Recorded<Value>] = []
 
