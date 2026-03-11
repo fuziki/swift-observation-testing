@@ -12,7 +12,7 @@ A testing utility for Swift's Observation framework. It lets you record how obse
 Add the package via Swift Package Manager:
 
 ```swift
-.package(url: "https://github.com/fuziki/swift-observation-testing", from: "X.Y.Z")
+.package(url: "https://github.com/fuziki/swift-observation-testing", from: "0.1.0")
 ```
 
 Then add `ObservationTesting` to your test target's dependencies.
