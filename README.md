@@ -19,6 +19,8 @@ Then add `ObservationTesting` to your test target's dependencies.
 
 ## Usage
 
+### Observing `@Observable` properties
+
 ```swift
 import Testing
 import Observation
@@ -57,6 +59,47 @@ func example() async {
 }
 ```
 
+### Observing Combine Publishers
+
+`timeline.observe` also accepts any `Publisher` with `Failure == Never`. Events are recorded with the virtual time at which they are emitted. No initial event is recorded.
+
+```swift
+import Testing
+import Combine
+import Observation
+import ObservationTesting
+
+@Observable
+@MainActor
+final class ViewModel {
+    var showDialog = PassthroughSubject<Void, Never>()
+    private let clock: AnyClock<Duration>
+
+    init(clock: AnyClock<Duration>) { self.clock = clock }
+
+    func onTap() async {
+        try? await clock.sleep(for: .seconds(1))
+        showDialog.send()
+    }
+}
+
+@Test @MainActor
+func example() async {
+    let timeline = TestTimeline()
+    let vm = ViewModel(clock: timeline.anyClock)
+
+    let showDialog = timeline.observe(vm.showDialog)
+
+    timeline.schedule(at: .seconds(1)) { await vm.onTap() }
+
+    await timeline.advance(by: .seconds(5))
+
+    #expect(showDialog.events.map(\.time) == [
+        .seconds(2),
+    ])
+}
+```
+
 ## API
 
 ### `TestTimeline`
@@ -65,7 +108,8 @@ Manages virtual time and schedules actions.
 
 | Method | Description |
 |---|---|
-| `observe(_ expression:)` | Starts observing an expression and returns a `TestObserver` |
+| `observe(_ expression:)` | Starts observing an `@Observable` expression and returns a `TestObserver` |
+| `observe(_ publisher:)` | Starts observing a `Publisher` (`Failure == Never`) and returns a `TestObserver` |
 | `schedule(at:action:)` | Schedules an action at an absolute time from test start |
 | `advance(by:)` | Advances virtual time and executes scheduled actions |
 | `anyClock` | A type-erased clock for injection into production code |
