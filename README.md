@@ -1,5 +1,10 @@
 # swift-observation-testing
 
+[![Test](https://github.com/fuziki/swift-observation-testing/actions/workflows/test.yml/badge.svg)](https://github.com/fuziki/swift-observation-testing/actions/workflows/test.yml)
+[![Swift 6.0+](https://img.shields.io/badge/Swift-6.0%2B-F05138?logo=swift)](https://swift.org)
+[![Platforms](https://img.shields.io/badge/platforms-iOS%2017%20%7C%20macOS%2014%20%7C%20tvOS%2017%20%7C%20watchOS%2010-lightgrey)](Package.swift)
+[![License: MIT](https://img.shields.io/github/license/fuziki/swift-observation-testing)](LICENSE)
+
 A testing utility for Swift's Observation framework and Combine's `ObservableObject`. It lets you record how observed values change over virtual time, making timeline-based assertions straightforward.
 
 ## Requirements
