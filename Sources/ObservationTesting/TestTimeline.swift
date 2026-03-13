@@ -31,6 +31,14 @@ public final class TestTimeline {
         TestObserver(timeline: self, publisher: publisher)
     }
 
+    /// Registers an ObservableObject and an expression, and creates a TestObserver that records the expression result on each change
+    public func observe<O: ObservableObject, Value>(
+        _ object: O,
+        _ expression: @autoclosure @escaping () -> Value
+    ) -> TestObserver<Value> {
+        TestObserver(timeline: self, object: object, expression: expression)
+    }
+
     /// Schedules an action at an absolute time measured from test start (0 seconds)
     public func schedule(at time: Duration, action: @escaping @MainActor () async -> Void) {
         scheduledActions.append((time, action))
