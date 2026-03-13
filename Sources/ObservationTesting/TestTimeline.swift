@@ -1,6 +1,6 @@
-import Foundation
 import Clocks
 import Combine
+import Foundation
 
 /// Manages virtual time and controls action execution (scenarios) at specified times.
 ///
@@ -62,7 +62,9 @@ public final class TestTimeline {
     /// let timeline = TestTimeline()
     /// let vm = ViewModel(clock: timeline.anyClock)
     /// ```
-    public var anyClock: AnyClock<Duration> { AnyClock(clock) }
+    public var anyClock: AnyClock<Duration> {
+        AnyClock(clock)
+    }
 
     private var scheduledActions: [(time: Duration, action: @MainActor () async -> Void)] = []
 
@@ -117,8 +119,8 @@ public final class TestTimeline {
     /// ```swift
     /// let title = timeline.observe(vm, vm.title)
     /// ```
-    public func observe<O: ObservableObject, Value>(
-        _ object: O,
+    public func observe<Value>(
+        _ object: some ObservableObject,
         _ expression: @autoclosure @escaping () -> Value
     ) -> TestObserver<Value> {
         TestObserver(timeline: self, object: object, expression: expression)

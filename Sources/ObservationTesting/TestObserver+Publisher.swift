@@ -11,7 +11,7 @@ extension TestObserver {
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 let duration = self.timeline.startInstant.duration(to: self.timeline.clock.now)
-                self.events.append(.next(duration, value))
+                events.append(.next(duration, value))
             }
         }
     }

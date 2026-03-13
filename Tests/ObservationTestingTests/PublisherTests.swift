@@ -1,12 +1,11 @@
 import Clocks
+import ObservationTesting
 import Testing
-@testable import ObservationTesting
 
-@Suite("Publisher Tests")
 @MainActor
 struct PublisherTests {
     @Test("Can record events emitted by a Publisher")
-    func testPublisherObservation() async {
+    func publisherObservation() async {
         let timeline = TestTimeline()
         let vm = SamplePublisherViewModel(clock: timeline.anyClock)
 

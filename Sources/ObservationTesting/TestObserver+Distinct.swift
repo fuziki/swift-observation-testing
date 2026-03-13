@@ -1,4 +1,4 @@
-extension TestObserver where Value: Equatable {
+public extension TestObserver where Value: Equatable {
     /// Events with consecutive duplicate values removed, keeping only the first occurrence.
     ///
     /// Use `distinctEvents` when you care about *state transitions* rather than every
@@ -16,7 +16,7 @@ extension TestObserver where Value: Equatable {
     ///
     /// - Note: Only *consecutive* duplicates are removed. If the value returns to a
     ///   previous state after changing, both transitions are kept.
-    public var distinctEvents: [Recorded<Value>] {
+    var distinctEvents: [Recorded<Value>] {
         events.reduce(into: []) { result, recorded in
             if result.last.map({ $0.value != recorded.value }) ?? true {
                 result.append(recorded)

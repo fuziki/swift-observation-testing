@@ -1,12 +1,11 @@
 import Clocks
+import ObservationTesting
 import Testing
-@testable import ObservationTesting
 
-@Suite("Observation Tests")
 @MainActor
 struct ObservationTests {
     @Test("Can accurately record time progression and state changes")
-    func testTimelineRecording() async {
+    func timelineRecording() async {
         // 1. Setup Timeline & ViewModel
         let timeline = TestTimeline()
         let vm = SampleObservationViewModel(clock: timeline.anyClock)
@@ -14,7 +13,8 @@ struct ObservationTests {
         // 2. Receive the Observer in a variable with the same name as the observed property
         let title = timeline.observe(vm.title)
 
-        // 3. Schedule Scenarios (verify that they are correctly sorted by absolute time regardless of registration order)
+        // 3. Schedule Scenarios (verify that they are correctly sorted by absolute time regardless of registration
+        // order)
         timeline.schedule(at: .seconds(3)) {
             await vm.onTap()
         }
@@ -27,7 +27,7 @@ struct ObservationTests {
 
         // 5. Assertions
         #expect(title.events == [
-            .next(.zero,       "A"), // initial state
+            .next(.zero, "A"), // initial state
             .next(.seconds(1), "B"), // at 1s: first tap begins
             .next(.seconds(2), "C"), // at 2s: first tap's sleep(1s) completes
             .next(.seconds(3), "B"), // at 3s: second tap begins
@@ -36,7 +36,7 @@ struct ObservationTests {
     }
 
     @Test("Can observe changes in a complex expression (@autoclosure)")
-    func testComplexExpressionObservation() async {
+    func complexExpressionObservation() async {
         let timeline = TestTimeline()
         let vm = SampleObservationViewModel(clock: timeline.anyClock)
 
@@ -53,9 +53,9 @@ struct ObservationTests {
         // not on changes to the expression result.
         // Therefore, the "A" → "B" change (false → false) is also recorded.
         #expect(isTitleC.events == [
-            .next(.zero,       false), // initial value ("A" == "C" → false)
+            .next(.zero, false), // initial value ("A" == "C" → false)
             .next(.seconds(2), false), // onChange fires on change to "B" → recorded as false
-            .next(.seconds(3), true),  // onChange fires on change to "C" → true
+            .next(.seconds(3), true), // onChange fires on change to "C" → true
         ])
     }
 }

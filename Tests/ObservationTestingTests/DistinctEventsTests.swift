@@ -1,12 +1,11 @@
 import Clocks
+import ObservationTesting
 import Testing
-@testable import ObservationTesting
 
-@Suite("Distinct Tests")
 @MainActor
 struct DistinctTests {
     @Test("Removes consecutive duplicate values, keeping the first occurrence")
-    func testDistinct() async {
+    func distinct() async {
         let timeline = TestTimeline()
         let vm = SampleObservationViewModel(clock: timeline.anyClock)
 
@@ -22,20 +21,20 @@ struct DistinctTests {
 
         // Confirm raw events contain the consecutive false
         #expect(isTitleC.events == [
-            .next(.zero,       false),
+            .next(.zero, false),
             .next(.seconds(2), false), // duplicate: "A"→"B" fires onChange but expression is still false
             .next(.seconds(3), true),
         ])
 
         // distinct deduplicates consecutive equal values
         #expect(isTitleC.distinctEvents == [
-            .next(.zero,       false), // first false is kept
-            .next(.seconds(3), true),  // transition to true is kept
+            .next(.zero, false), // first false is kept
+            .next(.seconds(3), true), // transition to true is kept
         ])
     }
 
     @Test("Keeps all events when no consecutive duplicates exist")
-    func testDistinctWithNoDuplicates() async {
+    func distinctWithNoDuplicates() async {
         let timeline = TestTimeline()
         let vm = SampleObservationViewModel(clock: timeline.anyClock)
 
@@ -52,7 +51,7 @@ struct DistinctTests {
     }
 
     @Test("Removes consecutive duplicates across multiple cycles")
-    func testDistinctMultipleCycles() async {
+    func distinctMultipleCycles() async {
         let timeline = TestTimeline()
         let vm = SampleObservationViewModel(clock: timeline.anyClock)
 
@@ -69,10 +68,10 @@ struct DistinctTests {
         await timeline.advance(by: .seconds(10))
 
         #expect(isTitleC.distinctEvents == [
-            .next(.zero,       false),
+            .next(.zero, false),
             .next(.seconds(2), true),
             .next(.seconds(3), false),
-            .next(.seconds(4), true),  // 2nd tap: 3s start + 1s sleep = 4s
+            .next(.seconds(4), true), // 2nd tap: 3s start + 1s sleep = 4s
         ])
     }
 }

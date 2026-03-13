@@ -30,15 +30,15 @@ public enum Recorded<Value>: CustomStringConvertible {
     /// A human-readable representation of this event, e.g. `next(1.0 seconds, "Hello")`.
     public var description: String {
         switch self {
-        case .next(let time, let value):
-            return "next(\(time), \(value))"
+        case let .next(time, value):
+            "next(\(time), \(value))"
         }
     }
 
     /// The virtual time at which this event was recorded.
     public var time: Duration {
         switch self {
-        case .next(let duration, _):
+        case let .next(duration, _):
             duration
         }
     }
@@ -46,7 +46,7 @@ public enum Recorded<Value>: CustomStringConvertible {
     /// The value captured at ``time``.
     public var value: Value {
         switch self {
-        case .next(_, let value):
+        case let .next(_, value):
             value
         }
     }

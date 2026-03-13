@@ -2,9 +2,9 @@ import Combine
 
 extension TestObserver {
     /// Creates an observer that tracks an expression on an `ObservableObject`.
-    convenience init<O: ObservableObject>(
+    convenience init(
         timeline: TestTimeline,
-        object: O,
+        object: some ObservableObject,
         expression: @escaping () -> Value
     ) {
         self.init(timeline: timeline)
@@ -20,7 +20,7 @@ extension TestObserver {
                 let duration = self.timeline.startInstant.duration(to: self.timeline.clock.now)
                 await Task.yield()
                 if let expression = self.expression {
-                    self.events.append(.next(duration, expression()))
+                    events.append(.next(duration, expression()))
                 }
             }
         }
