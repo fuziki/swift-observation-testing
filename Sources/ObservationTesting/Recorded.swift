@@ -17,6 +17,13 @@ public enum Recorded<Value>: CustomStringConvertible {
             duration
         }
     }
+
+    public var value: Value {
+        switch self {
+        case .next(_, let value):
+            value
+        }
+    }
 }
 
 extension Recorded: Equatable where Value: Equatable {}
