@@ -1,5 +1,5 @@
-import Testing
 import Clocks
+import Testing
 @testable import ObservationTesting
 
 @Suite("Publisher Tests")

@@ -1,6 +1,6 @@
-import Foundation
 import Clocks
 import Combine
+import Foundation
 
 /// Records changes in the value of the specified expression along with virtual time.
 ///
