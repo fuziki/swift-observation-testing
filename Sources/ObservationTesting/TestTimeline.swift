@@ -13,8 +13,9 @@ import Combine
 /// A typical test follows four steps:
 ///
 /// 1. Create a `TestTimeline` and inject ``anyClock`` into the system-under-test.
-/// 2. Call one of the ``observe(_:)-9yjke``, ``observe(_:_:)``, or ``observe(_:)-4gkbx``
-///    overloads to start recording values.
+/// 2. Call one of the three `observe` overloads to start recording values:
+///    ``observe(_:)`` for `@Observable` expressions, ``observe(_:_:)`` for
+///    `ObservableObject` instances, or ``observe(_:)`` for `Publisher` values.
 /// 3. Call ``schedule(at:action:)`` for each action you want to fire at a specific virtual time.
 /// 4. Call ``advance(by:)`` to run the simulation, then assert on the recorded ``TestObserver/events``.
 ///

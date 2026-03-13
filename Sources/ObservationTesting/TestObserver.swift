@@ -4,9 +4,9 @@ import Combine
 
 /// Records changes in the value of the specified expression along with virtual time.
 ///
-/// You do not create `TestObserver` directly; instead, call one of the
-/// ``TestTimeline/observe(_:)-9yjke``, ``TestTimeline/observe(_:_:)``, or
-/// ``TestTimeline/observe(_:)-4gkbx`` methods on a ``TestTimeline``.
+/// You do not create `TestObserver` directly; instead, call one of the `observe` overloads
+/// on a ``TestTimeline``: ``TestTimeline/observe(_:)`` for `@Observable` expressions or
+/// `Publisher` values, or ``TestTimeline/observe(_:_:)`` for `ObservableObject` instances.
 ///
 /// After running the simulation with ``TestTimeline/advance(by:)``, inspect
 /// ``events`` (or ``distinctEvents`` for `Equatable` values) to assert the
