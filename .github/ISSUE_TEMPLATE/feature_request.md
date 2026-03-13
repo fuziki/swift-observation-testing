@@ -1,20 +1,32 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
+about: Suggest a new feature or API for ObservationTesting
+title: '[Feature] '
+labels: enhancement
 assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Problem / Motivation
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+<!-- Describe the testing scenario that is currently difficult or impossible. -->
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Proposed API
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+<!-- Show the API you'd like to see. Code examples are preferred. -->
+
+```swift
+// Example usage
+let timeline = await TestTimeline()
+let observer = timeline.observe(/* ... */)
+// ...
+XCTAssertEqual(observer.events, [...])
+```
+
+## Alternatives Considered
+
+<!-- Any workarounds or alternative designs you've thought about. -->
+
+## Additional Context
+
+<!-- Any other context, references, or prior art. -->
