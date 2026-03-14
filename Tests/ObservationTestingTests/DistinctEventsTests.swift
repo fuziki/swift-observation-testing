@@ -23,13 +23,13 @@ struct DistinctTests {
         #expect(isTitleC.events == [
             .next(.zero, false),
             .next(.seconds(2), false), // duplicate: "A"→"B" fires onChange but expression is still false
-            .next(.seconds(3), true),
+            .next(.seconds(3), true)
         ])
 
         // distinct deduplicates consecutive equal values
         #expect(isTitleC.distinctEvents == [
             .next(.zero, false), // first false is kept
-            .next(.seconds(3), true), // transition to true is kept
+            .next(.seconds(3), true) // transition to true is kept
         ])
     }
 
@@ -71,7 +71,7 @@ struct DistinctTests {
             .next(.zero, false),
             .next(.seconds(2), true),
             .next(.seconds(3), false),
-            .next(.seconds(4), true), // 2nd tap: 3s start + 1s sleep = 4s
+            .next(.seconds(4), true) // 2nd tap: 3s start + 1s sleep = 4s
         ])
     }
 }

@@ -30,7 +30,7 @@ struct ObservableObjectTests {
             .next(.seconds(1), "B"), // at 1s: first tap begins
             .next(.seconds(2), "C"), // at 2s: first tap's sleep(1s) completes
             .next(.seconds(3), "B"), // at 3s: second tap begins
-            .next(.seconds(4), "C"), // at 4s: second tap's sleep(1s) completes
+            .next(.seconds(4), "C") // at 4s: second tap's sleep(1s) completes
         ])
     }
 
@@ -52,7 +52,7 @@ struct ObservableObjectTests {
         #expect(isTitleC.events == [
             .next(.zero, false), // initial value ("A" == "C" → false)
             .next(.seconds(2), false), // onChange fires on change to "B" → false
-            .next(.seconds(3), true), // onChange fires on change to "C" → true
+            .next(.seconds(3), true) // onChange fires on change to "C" → true
         ])
     }
 }

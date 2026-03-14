@@ -1,6 +1,5 @@
 # nicklockwood/SwiftFormat configuration
 
---swiftversion 5.9
 --indent 4
 --tabwidth 4
 --linebreaks lf
@@ -8,7 +7,7 @@
 --importgrouping alphabetized
 --allman false
 --self remove
---commas always
+--commas inline
 --header ignore
 --enable sortImports
 --exclude .build,tools

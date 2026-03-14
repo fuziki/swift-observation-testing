@@ -22,7 +22,7 @@ struct PublisherTests {
 
         #expect(showDialog.events.map(\.time) == [
             .seconds(2), // at 2s: first tap's sleep(1s) completes
-            .seconds(4), // at 4s: second tap's sleep(1s) completes
+            .seconds(4) // at 4s: second tap's sleep(1s) completes
         ])
     }
 }
