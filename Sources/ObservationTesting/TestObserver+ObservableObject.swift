@@ -20,7 +20,10 @@ extension TestObserver {
                 let duration = self.timeline.startInstant.duration(to: self.timeline.clock.now)
                 await Task.yield()
                 if let expression = self.expression {
-                    events.append(.next(duration, expression()))
+                    // Explicit `self` is required: older Swift versions do not allow implicit self
+                    // after `guard let self` in a nested closure, causing a compile error in CI.
+                    // swiftlint:disable:next redundant_self
+                    self.events.append(.next(duration, expression()))
                 }
             }
         }

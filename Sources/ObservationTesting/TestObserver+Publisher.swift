@@ -11,7 +11,10 @@ extension TestObserver {
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 let duration = self.timeline.startInstant.duration(to: self.timeline.clock.now)
-                events.append(.next(duration, value))
+                // Explicit `self` is required: older Swift versions do not allow implicit self
+                // after `guard let self` in a nested closure, causing a compile error in CI.
+                // swiftlint:disable:next redundant_self
+                self.events.append(.next(duration, value))
             }
         }
     }
