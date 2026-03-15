@@ -37,6 +37,7 @@ import Observation
 import ObservationTesting
 
 @Observable
+@MainActor
 final class ViewModel {
     var title = "A"
     private let clock: AnyClock<Duration>
@@ -78,6 +79,7 @@ import Testing
 import Combine
 import ObservationTesting
 
+@MainActor
 final class ViewModel: ObservableObject {
     @Published var title = "A"
     private let clock: AnyClock<Duration>
@@ -119,6 +121,7 @@ import Testing
 import Combine
 import ObservationTesting
 
+@MainActor
 final class ViewModel {
     var showDialog = PassthroughSubject<Void, Never>()
     private let clock: AnyClock<Duration>
