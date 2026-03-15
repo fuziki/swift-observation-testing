@@ -9,8 +9,8 @@ import Foundation
 /// `Publisher` values, or ``TestTimeline/observe(_:_:)`` for `ObservableObject` instances.
 ///
 /// After running the simulation with ``TestTimeline/advance(by:)``, inspect
-/// ``events`` (or ``distinctEvents`` for `Equatable` values) to assert the
-/// expected change history.
+/// ``events`` (or ``distinctEvents`` for `Equatable` values, or ``eventTimes``
+/// for `Void` publishers) to assert the expected change history.
 ///
 /// ```swift
 /// let title = timeline.observe(vm.title)

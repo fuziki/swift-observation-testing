@@ -20,7 +20,7 @@ struct PublisherTests {
 
         await timeline.advance(by: .seconds(10))
 
-        #expect(showDialog.events.map(\.time) == [
+        #expect(showDialog.eventTimes == [
             .seconds(2), // at 2s: first tap's sleep(1s) completes
             .seconds(4) // at 4s: second tap's sleep(1s) completes
         ])

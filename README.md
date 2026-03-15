@@ -145,7 +145,7 @@ func example() async {
 
     await timeline.advance(by: .seconds(5))
 
-    #expect(showDialog.events.map(\.time) == [
+    #expect(showDialog.eventTimes == [
         .seconds(2),
     ])
 }
@@ -164,7 +164,18 @@ func example() async {
 ])
 ```
 
+### Asserting emission times with `eventTimes`
+
+`eventTimes` returns the list of virtual times at which events were recorded. Use this when `Value` is not `Equatable` (e.g. `Void`) and you only need to assert when emissions occurred.
+
+```swift
+// For a Void publisher where values cannot be compared:
+#expect(showDialog.eventTimes == [.seconds(2)])
+```
+
 ## API
+
+For full API reference, see the [DocC documentation](https://fuziki.github.io/swift-observation-testing/documentation/observationtesting/).
 
 ### `TestTimeline`
 
@@ -187,6 +198,7 @@ Holds the recorded history of an observed expression.
 |---|---|
 | `events: [Recorded<Value>]` | All recorded values with their timestamps |
 | `distinctEvents: [Recorded<Value>]` | Events with consecutive duplicate values removed (`Value: Equatable`) |
+| `eventTimes: [Duration]` | The virtual times at which events were recorded |
 
 ### `Recorded<Value>`
 

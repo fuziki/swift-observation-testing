@@ -145,7 +145,7 @@ func example() async {
 
     await timeline.advance(by: .seconds(5))
 
-    #expect(showDialog.events.map(\.time) == [
+    #expect(showDialog.eventTimes == [
         .seconds(2),
     ])
 }
@@ -164,7 +164,18 @@ func example() async {
 ])
 ```
 
+### `eventTimes` で発火タイミングをアサートする
+
+`eventTimes` はイベントが記録された仮想時刻の一覧を返します。`Value` が `Equatable` でない場合（例：`Void`）に、いつ発行されたかだけをアサートしたいときに使います。
+
+```swift
+// Void の Publisher で値の比較ができない場合:
+#expect(showDialog.eventTimes == [.seconds(2)])
+```
+
 ## API
+
+詳細な API リファレンスは [DocC ドキュメント](https://fuziki.github.io/swift-observation-testing/documentation/observationtesting/) を参照してください。
 
 ### `TestTimeline`
 
@@ -187,6 +198,7 @@ func example() async {
 |-----------|------|
 | `events: [Recorded<Value>]` | タイムスタンプ付きで記録されたすべての値 |
 | `distinctEvents: [Recorded<Value>]` | 連続する重複値を除去したイベント列（`Value: Equatable`） |
+| `eventTimes: [Duration]` | イベントが記録された仮想時刻の一覧 |
 
 ### `Recorded<Value>`
 
