@@ -212,3 +212,13 @@ func example() async {
 |-----------|------|
 | `time: Duration` | イベントが記録された仮想時刻 |
 | `value: Value` | 記録された値 |
+
+## 開発
+
+このプロジェクトでは [SwiftLint](https://github.com/realm/SwiftLint) と [SwiftFormat](https://github.com/nicklockwood/SwiftFormat) を使ってコードスタイルを統一しています。ソースファイルを編集した後は以下を実行してください:
+
+```sh
+make fix   # lint の自動修正とフォーマットを適用
+```
+
+コントリビューションの詳細は [CONTRIBUTING.md](CONTRIBUTING.md) を参照してください。

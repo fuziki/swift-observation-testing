@@ -212,3 +212,13 @@ Represents a single recorded event.
 |---|---|
 | `time: Duration` | Virtual time at which the event was recorded |
 | `value: Value` | The recorded value |
+
+## Development
+
+This project uses [SwiftLint](https://github.com/realm/SwiftLint) and [SwiftFormat](https://github.com/nicklockwood/SwiftFormat) to enforce a consistent code style. Run the following command after editing source files:
+
+```sh
+make fix   # auto-fix lint issues and apply formatting
+```
+
+For full contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
